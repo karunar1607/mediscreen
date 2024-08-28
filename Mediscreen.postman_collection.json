@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "7e68faca-c0e1-4884-a674-298c7f9c6877",
+		"name": "Mediscreen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17777331"
+	},
+	"item": [
+		{
+			"name": "createPatient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"family\": \"test23\",\r\n        \"given\": \"User\",\r\n        \"dob\": \"04-06-1990\",\r\n        \"sex\": \"F\",\r\n        \"address\": \"288 Steppes mill rd\",\r\n        \"phone\": \"841-874-6522\"\r\n }\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/patient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient"
+					]
+				},
+				"description": "This Service accepts Patient details and Creates patient record and returns patient id"
+			},
+			"response": []
+		},
+		{
+			"name": "updatePatient",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n        \"id\": 1,\r\n        \"family\": \"test\",\r\n        \"given\": \"user\",\r\n        \"dob\": \"11-05-1982\",\r\n        \"sex\": \"F\",\r\n        \"address\": \"288 Steppes mill rd ext\",\r\n        \"phone\": \"8641-874-6522\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/patient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient"
+					]
+				},
+				"description": "This Service accepts Patient details and updates patient record and returns patient id,Patient id needs to be passed in the request."
+			},
+			"response": []
+		},
+		{
+			"name": "deletePatient",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/patient?id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This Service accepts Patient Id and deletes the patient record."
+			},
+			"response": []
+		},
+		{
+			"name": "getPatients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/patients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patients"
+					]
+				},
+				"description": "This services returns all the patient data."
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/patient/id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"id=2"
+					]
+				},
+				"description": "This Service returns patient data based on the id provided."
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientByfamilyName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/patient/familyName=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patient",
+						"familyName=test"
+					]
+				},
+				"description": "This Service returns patient data based on the family name provided."
+			},
+			"response": []
+		},
+		{
+			"name": "createPatient Records",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"patientId\": 1,\r\n        \"notes\": \" high blood pressure\"\r\n        \r\n }\r\n    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/patHistory/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patHistory",
+						"add"
+					]
+				},
+				"description": "This Service accepts patient record details and creates pationt record."
+			},
+			"response": []
+		},
+		{
+			"name": "getAllPatientRecords",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/patHistory/patients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patHistory",
+						"patients"
+					]
+				},
+				"description": "This service retruns all the patient records."
+			},
+			"response": []
+		},
+		{
+			"name": "get PatientRecord by Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/patHistory/patient?patientId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"patHistory",
+						"patient"
+					],
+					"query": [
+						{
+							"key": "patientId",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This service retruns patient records based on the patient id provided."
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientAssesmentById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/assess/id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"assess",
+						"id=1"
+					]
+				},
+				"description": "This service retruns the patient assesment based on the patient id provided."
+			},
+			"response": []
+		},
+		{
+			"name": "getPatientAssesmentByFamilyName",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/assess/familyName=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"assess",
+						"familyName=test"
+					]
+				},
+				"description": "This service retruns the patient assesment based on the family name provided."
+			},
+			"response": []
+		}
+	]
+}
