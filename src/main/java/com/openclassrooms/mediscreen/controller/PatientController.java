@@ -46,7 +46,7 @@ public class PatientController {
 
 	@PostMapping("/patient")
 	public Long createPatient(@RequestBody Patient patient) {
-		log.info("POST /patient called with :"+patient.toString());
+		log.info("POST /patient called with :" + patient.toString());
 
 		return patientService.savePatient(patient);
 	}
@@ -60,7 +60,7 @@ public class PatientController {
 
 	@DeleteMapping("/patient")
 	public void deletePatient(@RequestParam Long id) {
-		log.info("DELETE /patient called with id "+id);
+		log.info("DELETE /patient called with id " + id);
 
 		patientService.deletePatient(id);
 	}

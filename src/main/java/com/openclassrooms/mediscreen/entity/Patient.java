@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Patient {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String family;
 	private String given;
@@ -16,8 +16,10 @@ public class Patient {
 	private String sex;
 	private String address;
 	private String phone;
-	public Patient() {}
-	
+
+	public Patient() {
+	}
+
 	@Override
 	public String toString() {
 		return "Patient [family=" + family + ", given=" + given + ", dob=" + dob + ", sex=" + sex + ", address="
@@ -37,45 +39,53 @@ public class Patient {
 	public String getFamily() {
 		return family;
 	}
+
 	public void setFamily(String family) {
 		this.family = family;
 	}
+
 	public String getGiven() {
 		return given;
 	}
+
 	public void setGiven(String given) {
 		this.given = given;
 	}
+
 	public String getDob() {
 		return dob;
 	}
+
 	public void setDob(String dob) {
 		this.dob = dob;
 	}
+
 	public String getSex() {
 		return sex;
 	}
+
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public Long getId() {
 		return id;
 	}
-	
-
-
-	
 
 }

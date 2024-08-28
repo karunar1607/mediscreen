@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import com.openclassrooms.mediscreen.entity.PatientResponse;
 public class PatientAssesmentService {
 	@Autowired
 	RestTemplate template;
+	private static final Logger log = LoggerFactory.getLogger(PatientService.class);
 
 	private static final String ANTIBODIES = "Antibodies";
 
@@ -53,54 +56,69 @@ public class PatientAssesmentService {
 	static String PatientApiUrl = "http://localhost:8080/patient";
 	public static List<String> triggerWords = new ArrayList<String>();
 
+	// This method accepts patient id and calculate the assessment
 	public String getPatientAssesmentById(Long patinetId) throws JsonMappingException, JsonProcessingException {
+		log.debug("getPatientAssesmentById called with Patient id:{} ", patinetId);
+
 		String returnString = "";
-		int count=0;
+		int count = 0;
 		PatientResponse patient = getPatient(patinetId);
-		if (patient!= null) {
-		List<PatientHistoryResponse> patientHistory = getPatientHistory(patinetId);
+		if (patient != null) {
+			List<PatientHistoryResponse> patientHistory = getPatientHistory(patinetId);
 
-		int age = calculateAge(patient.getDob());
-		String sex = patient.getSex();
-		returnString = patient.getGiven() + " " + patient.getFamily() + " (age " + age + ") diabetes assessment is: ";
+			int age = calculateAge(patient.getDob());
+			String sex = patient.getSex();
+			returnString = patient.getGiven() + " " + patient.getFamily() + " (age " + age
+					+ ") diabetes assessment is: ";
+			// to get the trigger count based on the patient history
+			count = getTriggerCount(patientHistory);
+			log.debug("getTriggerCount returns count:{} ", count);
 
-		count = getTriggerCount(patientHistory);
-		String assesment = getAssesment(count, age, sex);
-		returnString = returnString + assesment;
-		
-		}
-		else {
-			returnString=" No record found for patied id: "+patinetId;
+			// to calculate the assessment based on trigger count ,age and Sex
+			String assesment = getAssesment(count, age, sex);
+			log.debug("getAssesment returns assesment:{} ", assesment);
+
+			returnString = returnString + assesment;
+
+		} else {
+			returnString = " No record found for patied id: " + patinetId;
 		}
 		return returnString;
 	}
-	
+	// This method accepts family name and calculate the assessment
+
 	public String getPatientAssesmentByName(String familyName) throws JsonMappingException, JsonProcessingException {
-		String returnString = "";
-		int count=0;
-		PatientResponse patient = getPatientByName(familyName);
-		if (patient!= null) {
-			if(patient.getId() != null) {
-		List<PatientHistoryResponse> patientHistory = getPatientHistory(patient.getId());
-		int age = calculateAge(patient.getDob());
-		String sex = patient.getSex();
-		returnString = patient.getGiven() + " " + patient.getFamily() + " (age " + age + ") diabetes assessment is: ";
+		log.debug("getPatientAssesmentByName called with Patient family name:{} ", familyName);
 
-		count = getTriggerCount(patientHistory);
-		String assesment = getAssesment(count, age, sex);
-		returnString = returnString + assesment;
+		String returnString = "";
+		int count = 0;
+		PatientResponse patient = getPatientByName(familyName);
+		if (patient != null) {
+			if (patient.getId() != null) {
+				List<PatientHistoryResponse> patientHistory = getPatientHistory(patient.getId());
+				int age = calculateAge(patient.getDob());
+				String sex = patient.getSex();
+				returnString = patient.getGiven() + " " + patient.getFamily() + " (age " + age
+						+ ") diabetes assessment is: ";
+				// to get the trigger count based on the patient history
+				count = getTriggerCount(patientHistory);
+				log.debug("getTriggerCount returns count:{} ", count);
+
+				// to calculate the assessment based on trigger count ,age and Sex
+
+				String assesment = getAssesment(count, age, sex);
+				log.debug("getAssesment returns assesment:{} ", assesment);
+
+				returnString = returnString + assesment;
+			} else {
+				returnString = " No record found for family Name: " + familyName;
+
 			}
-			else {
-				returnString=" No record found for family Name: "+familyName;
-		
-			}
-		}
-		else {
-			returnString=" No record found for family Name: "+familyName;
+		} else {
+			returnString = " No record found for family Name: " + familyName;
 		}
 		return returnString;
 	}
-
 
 	public static String getAssesment(int count, int age, String sex) {
 		String assesment = "None";
@@ -129,19 +147,19 @@ public class PatientAssesmentService {
 	private static int getTriggerCount(List<PatientHistoryResponse> patientHistory) {
 		int count = 0;
 		if (triggerWords.size() == 0) {
-		triggerWords.add(HEMOGLOBIN.toUpperCase());
-		triggerWords.add(MICROALBUMIN.toUpperCase());
-		triggerWords.add(BODY_WEIGHT.toUpperCase());
-		triggerWords.add(BODY_HEIGHT.toUpperCase());
-		triggerWords.add(SMOKER.toUpperCase());
-		triggerWords.add(ABNORMAL.toUpperCase());
-		triggerWords.add(CHOLESTEROL.toUpperCase());
-		triggerWords.add(DIZZINESS.toUpperCase());
-		triggerWords.add(RELAPSE.toUpperCase());
-		triggerWords.add(REACTION.toUpperCase());
-		triggerWords.add(ANTIBODIES.toUpperCase());
+			triggerWords.add(HEMOGLOBIN.toUpperCase());
+			triggerWords.add(MICROALBUMIN.toUpperCase());
+			triggerWords.add(BODY_WEIGHT.toUpperCase());
+			triggerWords.add(BODY_HEIGHT.toUpperCase());
+			triggerWords.add(SMOKER.toUpperCase());
+			triggerWords.add(ABNORMAL.toUpperCase());
+			triggerWords.add(CHOLESTEROL.toUpperCase());
+			triggerWords.add(DIZZINESS.toUpperCase());
+			triggerWords.add(RELAPSE.toUpperCase());
+			triggerWords.add(REACTION.toUpperCase());
+			triggerWords.add(ANTIBODIES.toUpperCase());
 		}
-		
+
 		for (PatientHistoryResponse pHR : patientHistory) {
 
 			for (String triggerWord : triggerWords) {
@@ -153,26 +171,29 @@ public class PatientAssesmentService {
 
 		return count;
 	}
+	// this method uses rest template to call
+	// http://localhost:8080/patHistory/patient?patientId
 
-	public  List<PatientHistoryResponse> getPatientHistory(Long patinetId)
+	public List<PatientHistoryResponse> getPatientHistory(Long patinetId)
 			throws JsonMappingException, JsonProcessingException {
 		ResponseEntity<String> response = template.getForEntity(PatientHistoryApiUrl + patinetId, String.class);
 		String responseBody = response.getBody();
-		List<PatientHistoryResponse> responseValue =new ArrayList<PatientHistoryResponse>();
+		List<PatientHistoryResponse> responseValue = new ArrayList<PatientHistoryResponse>();
 		if (responseBody != null) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode rootNode = objectMapper.readTree(responseBody);
-		 responseValue = objectMapper.convertValue(rootNode,
-				new TypeReference<List<PatientHistoryResponse>>() {
-				});
-		
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode rootNode = objectMapper.readTree(responseBody);
+			responseValue = objectMapper.convertValue(rootNode, new TypeReference<List<PatientHistoryResponse>>() {
+			});
+
 		}
 		return responseValue;
 	}
 
-	public  PatientResponse getPatient(Long patinetId) throws JsonMappingException, JsonProcessingException {
+	// this method uses rest template to call http://localhost:8080/patient/id
+	public PatientResponse getPatient(Long patinetId) throws JsonMappingException, JsonProcessingException {
 
-		ResponseEntity<String> patientResponse = template.getForEntity(PatientApiUrl+"/id="+ patinetId, String.class);
+		ResponseEntity<String> patientResponse = template.getForEntity(PatientApiUrl + "/id=" + patinetId,
+				String.class);
 		String patientResponseBody = patientResponse.getBody();
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -183,7 +204,7 @@ public class PatientAssesmentService {
 		return responseValue;
 	}
 
-	public  int calculateAge(String birthDate) {
+	public int calculateAge(String birthDate) {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
 		LocalDate formatedDate = LocalDate.parse(birthDate, formatter);
@@ -193,19 +214,20 @@ public class PatientAssesmentService {
 
 	}
 
-	
+	// this method uses rest template to call
+	// http://localhost:8080/patient/familyName
 	public PatientResponse getPatientByName(String familyName) throws JsonMappingException, JsonProcessingException {
-		ResponseEntity<String> patientResponse = template.getForEntity(PatientApiUrl+"/familyName="+ familyName, String.class);
+		ResponseEntity<String> patientResponse = template.getForEntity(PatientApiUrl + "/familyName=" + familyName,
+				String.class);
 		String patientResponseBody = patientResponse.getBody();
-		PatientResponse responseValue =new PatientResponse();
-		if(patientResponseBody!=null) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode node = objectMapper.readTree(patientResponseBody);
-		 responseValue = objectMapper.convertValue(node, new TypeReference<PatientResponse>() {
-		});
+		PatientResponse responseValue = new PatientResponse();
+		if (patientResponseBody != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode node = objectMapper.readTree(patientResponseBody);
+			responseValue = objectMapper.convertValue(node, new TypeReference<PatientResponse>() {
+			});
 		}
 		return responseValue;
 	}
 
-	
 }

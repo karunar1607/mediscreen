@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class PatientService {
 
-	
 	private PatientRepository repository;
+
 	@Autowired
 	public PatientService(PatientRepository repository) {
 		super();
@@ -45,6 +45,7 @@ public class PatientService {
 	}
 
 	public void deletePatient(Long id) {
+
 		log.debug("deletePatient called with id:{} ", id);
 
 		repository.deleteById(id);

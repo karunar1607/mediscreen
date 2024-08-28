@@ -26,27 +26,26 @@ class PatientAssesmentControllerTest {
 	void testGetPatientAssesmentById() throws JsonMappingException, JsonProcessingException {
 		// Arrange
 		long id = 1l;
-		String returnString="Anitha karuna (age 20) diabetes assessment is: In danger";
-		//Act
+		String returnString = "test user (age 20) diabetes assessment is: In danger";
+		// Act
 		doReturn(returnString).when(service).getPatientAssesmentById(anyLong());
 		String response = controller.getPatientAssesmentById(id);
-		//Assert
-		assertEquals(returnString,response);
-		
-		}
+		// Assert
+		assertEquals(returnString, response);
+
+	}
 
 	@Test
 	void testGetPatientAssesmentByFamilyName() throws JsonMappingException, JsonProcessingException {
 		// Arrange
-				String name = "test";
-				String returnString="Anitha karuna (age 20) diabetes assessment is: In danger";
-				//Act
-				doReturn(returnString).when(service).getPatientAssesmentByName(name);
-				String response = controller.getPatientAssesmentByFamilyName(name);
-				//Assert
-				assertEquals(returnString,response);
-				
-				}
+		String name = "test";
+		String returnString = "test user (age 20) diabetes assessment is: In danger";
+		// Act
+		doReturn(returnString).when(service).getPatientAssesmentByName(name);
+		String response = controller.getPatientAssesmentByFamilyName(name);
+		// Assert
+		assertEquals(returnString, response);
 
 	}
 
+}

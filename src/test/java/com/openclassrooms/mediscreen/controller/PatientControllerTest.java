@@ -119,16 +119,15 @@ class PatientControllerTest {
 
 	@Test
 	void testDeletePatient() {
-		//Arrange
-		long id=1l;
-		//Act
-		//Assert
-		  try {
-		controller.deletePatient(id);
-		  }
-		  catch (Exception e) {
-		        fail("Exception was thrown"); 
-		    }
+		// Arrange
+		long id = 1l;
+		// Act
+		// Assert
+		try {
+			controller.deletePatient(id);
+		} catch (Exception e) {
+			fail("Exception was thrown");
+		}
 
 	}
 

@@ -19,6 +19,4 @@ public class MediscreenApplication {
 		SpringApplication.run(MediscreenApplication.class, args);
 	}
 
-    
-	
 }
